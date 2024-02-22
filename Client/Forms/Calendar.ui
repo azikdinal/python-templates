@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CalendarWindow</class>
+ <widget class="QMainWindow" name="CalendarWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>360</width>
+    <height>570</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Календарь</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QFrame" name="calendarLayput">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>361</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>361</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <layout class="QVBoxLayout" name="clendarLayout_2">
+     <item>
+      <widget class="QCalendarWidget" name="calendarWidget_2"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="filterButton_2">
+       <property name="text">
+        <string>Фильтруется/Нет</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="LabelAuthor_2">
+         <property name="text">
+          <string>Автор</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="LineEditAuthor_2"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="LabelName_2">
+         <property name="text">
+          <string>Название</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="LineEditName_2"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="LabelGuest_2">
+         <property name="text">
+          <string>Гость</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="LineEditGuest_2"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="LabelPlace_2">
+         <property name="text">
+          <string>Место</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="LineEditPlace_2"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>360</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
