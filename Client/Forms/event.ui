@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EventForm</class>
+ <widget class="QMainWindow" name="EventForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Форма заполнения/создания события</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QComboBox" name="statusComboBox">
+      <item>
+       <property name="text">
+        <string>В процессе</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Завершен</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Отменен</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="titleLineEdit"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="placeComboBox"/>
+    </item>
+    <item>
+     <widget class="QDateEdit" name="dateEdit"/>
+    </item>
+    <item>
+     <widget class="QTimeEdit" name="timeEdit"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="relatedComboBox"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="correspondentComboBox"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="operatorComboBox"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="driverComboBox"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="equipmentComboBox"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="authorComboBox"/>
+    </item>
+    <item>
+     <widget class="QPlainTextEdit" name="additionalTextEdit"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="saveButton">
+      <property name="text">
+       <string>Сохранить</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

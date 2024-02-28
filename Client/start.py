@@ -12,8 +12,14 @@ class LoginWindow(QtWidgets.QMainWindow):
         # Соединяем событие нажатия кнопки входа с методом handleLogin
         self.pushButton.clicked.connect(self.handleLogin)
 
+        # Связываем событие ввода пароля с методом handleLogin
+        self.LineEditPassword.returnPressed.connect(self.handleLogin)
+
         # Подключение к базе данных
         self.db_connection = DatabaseConnection()
+
+        # Добавляем атрибут для хранения ссылки на главное окно
+        self.main_window = None
 
     def handleLogin(self):
         try:
@@ -27,8 +33,11 @@ class LoginWindow(QtWidgets.QMainWindow):
             if result:
                 print("Login successful!")
                 self.close()
-                main_window = MainWindow()
-                main_window.show()
+                
+                # Создаем объект MainWindow и сохраняем ссылку на него
+                self.main_window = MainWindow()
+                self.main_window.show()
+                
             else:
                 print("Invalid username or password. Please try again.")
 
