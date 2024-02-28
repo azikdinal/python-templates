@@ -17,16 +17,14 @@ class LoginWindow(QtWidgets.QMainWindow):
 
     def handleLogin(self):
         try:
-            # Получаем введенные логин и пароль
             entered_username = self.LineEditLogin.text()
             entered_password = self.LineEditPassword.text()
 
-            # Проверяем логин и пароль в базе данных
-            query = f"SELECT * FROM users WHERE username='{entered_username}' AND password='{entered_password}';"
-            result = self.db_connection.fetch_data(query)
+            # Используйте параметризованный запрос
+            query = "SELECT * FROM users WHERE username=%s AND password=%s;"
+            result = self.db_connection.fetch_data(query, (entered_username, entered_password))
 
             if result:
-                # Если результат не пустой, значит, пользователь существует
                 print("Login successful!")
                 self.close()
                 main_window = MainWindow()
@@ -36,7 +34,6 @@ class LoginWindow(QtWidgets.QMainWindow):
 
         except Exception as e:
             print(f"Error handling login: {e}")
-
 
 
 class MainWindow(QtWidgets.QMainWindow):

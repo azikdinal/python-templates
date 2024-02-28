@@ -1,7 +1,10 @@
 from PyQt5 import QtWidgets, uic
 from Forms.main import Ui_MainWindow
+from database_connection import DatabaseConnection
 from calendarWindow import calendarWindow
-
+from addElementDialog import AddElementDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QMenuBar, QToolBar, QAction, QStatusBar, QFormLayout, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QCalendarWidget, QTimeEdit, QListView, QFrame
+from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QCalendarWidget, QTimeEdit
 import sys
  
 class mywindow(QtWidgets.QMainWindow):
@@ -19,6 +22,51 @@ class mywindow(QtWidgets.QMainWindow):
         
         self.calendarWindow = calendarWindow()
         self.setUiGroup(2)
+
+        self.addElementDialog = AddElementDialog(self)
+
+        self.ui.addButton.clicked.connect(self.addElementDialog.show)  # Открываем диалог добавления при нажатии кнопки "Добавить"
+        self.ui.deleteButton.clicked.connect(self.deleteElement)  # Вызываем функцию удаления при нажатии кнопки "Удалить"
+        self.ui.editButton.clicked.connect(self.editElement)  # Вызываем функцию редактирования при нажатии кнопки "Редактировать"
+        self.ui.deleteButton.clicked.connect(self.dellButtonClick)
+
+
+    def addElement(self):
+        dialog = AddElementDialog(self)
+        if dialog.exec_() == QDialog.Accepted:
+            data = dialog.getEnteredData()
+            # Обработка данных, например, добавление элемента в список или базу данных   
+            
+    def addElement(self):
+        data = self.addElementDialog.getEnteredData()
+        # Добавляем элемент в список или в QListView
+        # Пример для QListView: self.ui.listView.model().appendRow(QtGui.QStandardItem(data["title"]))
+
+    def populateComboBoxes(self):
+        # Создайте объект для работы с базой данных
+        db_connection = DatabaseConnection()
+
+        try:
+            # Заполняем выпадающий список статуса
+            status_query = "SELECT DISTINCT status FROM events"
+            status_values = db_connection.fetch_data(status_query)
+            self.statusComboBox.addItems([status[0] for status in status_values])
+
+            # Повторите процесс для других выпадающих списков
+        except Exception as e:
+            print("Ошибка при заполнении выпадающих списков:", e)
+        finally:
+            # Важно закрывать соединение после использования
+            db_connection.close_connection()
+             
+
+    def deleteElement(self):
+        # Реализуйте операцию удаления элемента
+        print("Deleting element...")
+
+    def editElement(self):
+        # Реализуйте операцию редактирования элемента
+        print("Editing element...")    
 
     def oneButtonClick(self):
         if self.calendarWindow.isHidden():
