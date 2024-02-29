@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QCalendarWidget, QTimeEdit
-
+from database_connection import DatabaseConnection
 
 
 class AddElementDialog(QDialog):
@@ -58,9 +58,69 @@ class AddElementDialog(QDialog):
         self.cancelButton.clicked.connect(self.reject)
 
     def populateComboBoxes(self):
-        # Реализуйте логику наполнения выпадающих списков данными из БД
-        # Например, self.statusComboBox.addItems(["в процессе", "завершен", "отменен"])
-        pass
+        # Создайте объект для работы с базой данных
+        db_connection = DatabaseConnection()
+
+        try:
+            # Заполняем выпадающий список статуса
+            status_query = "SELECT DISTINCT status FROM events"
+            status_values = db_connection.fetch_data(status_query)
+            self.statusComboBox.addItems([status[0] for status in status_values])
+
+            # Повторите процесс для других выпадающих списков
+            place_query = "SELECT DISTINCT place FROM events"
+            place_values = db_connection.fetch_data(place_query)
+            self.placeComboBox.addItems([place[0] for place in place_values])
+
+            linked_query = "SELECT DISTINCT linked FROM events"
+            linked_values = db_connection.fetch_data(linked_query)
+            self.linkedComboBox.addItems([linked[0] for linked in linked_values])
+
+            # Повторите процесс для других выпадающих списков
+
+        except Exception as e:
+            print("Ошибка при заполнении выпадающих списков:", e)
+        finally:
+            # Важно закрывать соединение после использования
+            db_connection.close_connection()
+
+    def addRecord(self):
+        # Получение данных из элементов формы
+        data = self.getEnteredData()
+
+        # Создаем экземпляр класса DatabaseConnection
+        db_connection = DatabaseConnection()
+
+        try:
+            # Устанавливаем соединение с базой данных
+            db_connection.connect()
+
+            # Пример запроса для вставки данных в таблицу events
+            insert_query = """
+            INSERT INTO events (status, title, place, date, time, related, correspondent, operator, driver, equipment, author, additional_info)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            # Передаем данные для вставки
+            db_connection.cursor.execute(insert_query, (
+                data["status"], data["title"], data["place"], data["date"],
+                data["time"], data["linked"], data["correspondent"],
+                data["operator"], data["driver"], data["equipment"],
+                data["author"], data["additional_info"]
+            ))
+
+            # Подтверждаем транзакцию
+            db_connection.connection.commit()
+
+            # Закрываем диалог
+            self.accept()
+
+        except Exception as e:
+            print("Ошибка при добавлении записи в базу данных:", e)
+
+        finally:
+            # Закрываем соединение с базой данных в блоке finally,
+            # чтобы убедиться, что соединение закрыто даже в случае ошибки
+            db_connection.close_connection()
 
     def getEnteredData(self):
         # Получение данных из элементов формы

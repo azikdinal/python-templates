@@ -3,6 +3,8 @@ from Forms.main import Ui_MainWindow
 from database_connection import DatabaseConnection
 from calendarWindow import calendarWindow
 from addElementDialog import AddElementDialog
+from PyQt5 import QtGui
+from PyQt5.QtCore import QStringListModel
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QMenuBar, QToolBar, QAction, QStatusBar, QFormLayout, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QCalendarWidget, QTimeEdit, QListView, QFrame
 from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QCalendarWidget, QTimeEdit
 import sys
@@ -30,17 +32,28 @@ class mywindow(QtWidgets.QMainWindow):
         self.ui.editButton.clicked.connect(self.editElement)  # Вызываем функцию редактирования при нажатии кнопки "Редактировать"
         self.ui.deleteButton.clicked.connect(self.dellButtonClick)
 
+        self.ui.listView.setModel(QStringListModel())
+
 
     def addElement(self):
-        dialog = AddElementDialog(self)
-        if dialog.exec_() == QDialog.Accepted:
-            data = dialog.getEnteredData()
-            # Обработка данных, например, добавление элемента в список или базу данных   
+        self.addElementDialog.populateComboBoxes()  # Заполняем выпадающие списки перед открытием диалога
+        if self.addElementDialog.exec_() == QDialog.Accepted:
+            data = self.addElementDialog.getEnteredData()
+            # Обработка данных, например, добавление элемента в список или базу данных
+ 
             
     def addElement(self):
         data = self.addElementDialog.getEnteredData()
-        # Добавляем элемент в список или в QListView
-        # Пример для QListView: self.ui.listView.model().appendRow(QtGui.QStandardItem(data["title"]))
+
+        # Пример для добавления элемента в модель
+        model = self.ui.listView.model()
+        model.setStringList(model.stringList() + [data["title"]])
+
+        # Дополнительная логика для добавления записи в базу данных
+        # ...
+
+        print("Adding element to the database:")
+        print(data)
 
     def populateComboBoxes(self):
         # Создайте объект для работы с базой данных
