@@ -86,7 +86,8 @@ CREATE TABLE public.events (
     driver text,
     equipment text,
     author text,
-    additional_info text
+    additional_info text,
+    linked character varying(255)
 );
 
 
@@ -121,7 +122,7 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 CREATE TABLE public.groups (
     id integer NOT NULL,
     name character varying(255) NOT NULL,
-    tamplate_id integer NOT NULL
+    tamplate_id integer
 );
 
 
@@ -312,7 +313,7 @@ CREATE TABLE public.users (
     id integer NOT NULL,
     username character varying(255),
     password character varying(255),
-    role character varying(255)
+    group_id integer NOT NULL
 );
 
 
@@ -450,7 +451,8 @@ COPY public.equipment (id, name, details) FROM stdin;
 -- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.events (id, status, title, place, date, "time", related, correspondent, operator, driver, equipment, author, additional_info) FROM stdin;
+COPY public.events (id, status, title, place, date, "time", related, correspondent, operator, driver, equipment, author, additional_info, linked) FROM stdin;
+1	в процессе	test	москва	29.03.2024	13:00	test	test	test	test	test	test	no	\N
 \.
 
 
@@ -459,6 +461,9 @@ COPY public.events (id, status, title, place, date, "time", related, corresponde
 --
 
 COPY public.groups (id, name, tamplate_id) FROM stdin;
+1	users	\N
+2	moderators	\N
+3	admins	\N
 \.
 
 
@@ -507,8 +512,7 @@ COPY public.templates (id, name, columns_list, admin_only) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, username, password, role) FROM stdin;
-1	qwe	123	admin
+COPY public.users (id, username, password, group_id) FROM stdin;
 \.
 
 
@@ -531,14 +535,14 @@ SELECT pg_catalog.setval('public.equipment_id_seq', 1, false);
 -- Name: events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.events_id_seq', 1, false);
+SELECT pg_catalog.setval('public.events_id_seq', 296, true);
 
 
 --
 -- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.groups_id_seq', 1, false);
+SELECT pg_catalog.setval('public.groups_id_seq', 3, true);
 
 
 --
@@ -573,7 +577,7 @@ SELECT pg_catalog.setval('public.templates_id_seq', 2, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 2, true);
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
 
 
 --
