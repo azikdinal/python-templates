@@ -75,11 +75,18 @@ ALTER SEQUENCE public.equipment_id_seq OWNED BY public.equipment.id;
 
 CREATE TABLE public.events (
     id integer NOT NULL,
-    title character varying(255) NOT NULL,
-    date date NOT NULL,
-    description text,
-    location character varying(255),
-    organizer character varying(255)
+    status text,
+    title text,
+    place text,
+    date text,
+    "time" text,
+    related text,
+    correspondent text,
+    operator text,
+    driver text,
+    equipment text,
+    author text,
+    additional_info text
 );
 
 
@@ -114,7 +121,7 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 CREATE TABLE public.groups (
     id integer NOT NULL,
     name character varying(255) NOT NULL,
-    templates_id integer
+    tamplate_id integer NOT NULL
 );
 
 
@@ -250,13 +257,25 @@ ALTER SEQUENCE public.roles_id_seq OWNED BY public.roles.id;
 
 
 --
+-- Name: tamplates_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tamplates_group (
+    group_id integer NOT NULL,
+    tamplate_id integer NOT NULL
+);
+
+
+ALTER TABLE public.tamplates_group OWNER TO postgres;
+
+--
 -- Name: templates; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.templates (
     id integer NOT NULL,
     name character varying(255),
-    columns_list text[],
+    columns_list json,
     admin_only boolean
 );
 
@@ -431,7 +450,7 @@ COPY public.equipment (id, name, details) FROM stdin;
 -- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.events (id, title, date, description, location, organizer) FROM stdin;
+COPY public.events (id, status, title, place, date, "time", related, correspondent, operator, driver, equipment, author, additional_info) FROM stdin;
 \.
 
 
@@ -439,7 +458,7 @@ COPY public.events (id, title, date, description, location, organizer) FROM stdi
 -- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.groups (id, name, templates_id) FROM stdin;
+COPY public.groups (id, name, tamplate_id) FROM stdin;
 \.
 
 
@@ -468,11 +487,19 @@ COPY public.roles (id, name) FROM stdin;
 
 
 --
+-- Data for Name: tamplates_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tamplates_group (group_id, tamplate_id) FROM stdin;
+\.
+
+
+--
 -- Data for Name: templates; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.templates (id, name, columns_list, admin_only) FROM stdin;
-1	Шаблон 1	{Статус,Название,Дата}	f
+2	Шаблон 1	{"Имя":"Карина"}	\N
 \.
 
 
@@ -539,14 +566,14 @@ SELECT pg_catalog.setval('public.roles_id_seq', 1, false);
 -- Name: templates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.templates_id_seq', 1, true);
+SELECT pg_catalog.setval('public.templates_id_seq', 2, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
@@ -605,6 +632,14 @@ ALTER TABLE ONLY public.roles
 
 
 --
+-- Name: tamplates_group tamplates_group_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tamplates_group
+    ADD CONSTRAINT tamplates_group_pk PRIMARY KEY (group_id, tamplate_id);
+
+
+--
 -- Name: templates templates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -637,11 +672,26 @@ ALTER TABLE ONLY public.workers
 
 
 --
--- Name: groups groups_templates_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tamplates_group_group_id_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.groups
-    ADD CONSTRAINT groups_templates_id_fkey FOREIGN KEY (templates_id) REFERENCES public.templates(id);
+CREATE INDEX tamplates_group_group_id_idx ON public.tamplates_group USING btree (group_id, tamplate_id);
+
+
+--
+-- Name: tamplates_group tamplates_group_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tamplates_group
+    ADD CONSTRAINT tamplates_group_fk FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
+-- Name: tamplates_group tamplates_group_fk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tamplates_group
+    ADD CONSTRAINT tamplates_group_fk_1 FOREIGN KEY (tamplate_id) REFERENCES public.templates(id);
 
 
 --
