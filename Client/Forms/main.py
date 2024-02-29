@@ -9,6 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QAction
+from template_manager import TemplateManager
 
 
 class Ui_MainWindow(object):
@@ -175,6 +177,9 @@ class Ui_MainWindow(object):
         # Добавляем обработчик события для кнопки "Добавить"
         self.addButton.clicked.connect(MainWindow.addElement)
 
+        self.tabs = QtWidgets.QTabWidget(self.centralwidget)  # Добавьте эту строку
+        self.tabs.setObjectName("tabs")  # Добавьте эту строку
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -205,6 +210,11 @@ class Ui_MainWindow(object):
         self.action_3.setText(_translate("MainWindow", "Изменить шаблон"))
         self.action_4.setText(_translate("MainWindow", "Удалить шаблон"))
         self.action_5.setText(_translate("MainWindow", "Открыть шаблон"))
+        self.action_5.triggered.connect(self.open_template)  # Связываем сигнал со слотом
         self.action_6.setText(_translate("MainWindow", "Фильтр"))
         self.actionDell.setText(_translate("MainWindow", "Dell"))
         self.action_7.setText(_translate("MainWindow", "Закрыть шаблон"))
+
+    def open_template(self):
+        template_manager = TemplateManager(self)  # Создаем экземпляр TemplateManager
+        template_manager.open_template()  # Вызываем метод open_template

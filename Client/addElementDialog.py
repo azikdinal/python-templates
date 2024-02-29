@@ -1,11 +1,18 @@
-from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QCalendarWidget, QTimeEdit
+from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5.QtCore import Qt, QDate, QTime, QDateTime
+from PyQt5.QtCore import QStringListModel, QModelIndex
+from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QCalendarWidget, QTimeEdit, QListView
+import sys
+
 from database_connection import DatabaseConnection
 
 
-class AddElementDialog(QDialog):
-    def __init__(self, parent=None):
-        super(AddElementDialog, self).__init__(parent)
 
+
+class AddElementDialog(QDialog):
+    def __init__(self, parent=None, data_to_edit=None):
+        super(AddElementDialog, self).__init__(parent)
+        self.data_to_edit = data_to_edit
         self.setWindowTitle("Форма заполнения")
 
         # Создание элементов формы
@@ -56,6 +63,24 @@ class AddElementDialog(QDialog):
         # Подключение сигналов к слотам
         self.addButton.clicked.connect(self.accept)
         self.cancelButton.clicked.connect(self.reject)
+        
+        # Если есть данные для редактирования, предзаполните форму
+        if self.data_to_edit:
+            self.titleLineEdit.setText(self.data_to_edit.get("title", ""))
+            self.statusComboBox.setCurrentText(self.data_to_edit.get("status", ""))
+            self.placeComboBox.setCurrentText(self.data_to_edit.get("place", ""))
+            self.dateCalendar.setSelectedDate(QtCore.QDate.fromString(self.data_to_edit.get("date", ""), "yyyy-MM-dd"))
+            self.startTimeEdit.setTime(QtCore.QTime.fromString(self.data_to_edit.get("start_time", ""), "hh:mm:ss"))
+            self.endTimeEdit.setTime(QtCore.QTime.fromString(self.data_to_edit.get("end_time", ""), "hh:mm:ss"))
+            self.linkedComboBox.setCurrentText(self.data_to_edit.get("linked", ""))
+            self.correspondentComboBox.setCurrentText(self.data_to_edit.get("correspondent", ""))
+            self.operatorComboBox.setCurrentText(self.data_to_edit.get("operator", ""))
+            self.driverComboBox.setCurrentText(self.data_to_edit.get("driver", ""))
+            self.equipmentComboBox.setCurrentText(self.data_to_edit.get("equipment", ""))
+            self.authorComboBox.setCurrentText(self.data_to_edit.get("author", ""))
+            self.notesTextEdit.setPlainText(self.data_to_edit.get("additional_info", ""))
+
+        
 
     def populateComboBoxes(self):
         # Создайте объект для работы с базой данных
@@ -128,7 +153,104 @@ class AddElementDialog(QDialog):
             "status": self.statusComboBox.currentText(),
             "title": self.titleLineEdit.text(),
             "place": self.placeComboBox.currentText(),
-            # Добавьте остальные поля
+            "date": self.dateCalendar.selectedDate().toString("yyyy-MM-dd"),
+            "time": self.startTimeEdit.time().toString("hh:mm:ss"),
+            "linked": self.linkedComboBox.currentText(),
+            "correspondent": self.correspondentComboBox.currentText(),
+            "operator": self.operatorComboBox.currentText(),
+            "driver": self.driverComboBox.currentText(),
+            "equipment": self.equipmentComboBox.currentText(),
+            "author": self.authorComboBox.currentText(),
+            "additional_info": self.notesTextEdit.toPlainText()
         }
         return data
+    
 
+
+    def saveDataToDatabase(self):
+        # Создайте объект для работы с базой данных
+        db_connection = DatabaseConnection()
+
+        try:
+            # Подготовка SQL-запроса для вставки данных
+            insert_query = """
+                INSERT INTO events (status, title, place, date, time, related, correspondent, operator, driver, equipment, author, additional_info)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+
+            # Получение данных из элементов формы
+            data = self.getEnteredData()
+
+            # Выполнение SQL-запроса
+            db_connection.connect()
+            db_connection.cursor.execute(insert_query, (
+                data["status"], data["title"], data["place"],
+                data["date"], data["time"], data["linked"],
+                data["correspondent"], data["operator"], data["driver"],
+                data["equipment"], data["author"], data["additional_info"]
+            ))
+
+            # Подтверждение изменений в базе данных
+            db_connection.connection.commit()
+
+            print("Данные успешно добавлены в базу данных.")
+
+        except Exception as e:
+            print("Ошибка при добавлении данных в базу данных:", e)
+        finally:
+            # Важно закрывать соединение после использования
+            db_connection.close_connection()
+
+    def editRecord(self, event_id):
+        # Получение данных из элементов формы
+        data = self.getEnteredData()
+
+        # Создаем экземпляр класса DatabaseConnection
+        db_connection = DatabaseConnection()
+
+        try:
+            # Устанавливаем соединение с базой данных
+            db_connection.connect()
+
+            # Пример запроса для обновления данных в таблице events
+            update_query = """
+            UPDATE events SET
+            status = %s, title = %s, place = %s, date = %s, time = %s,
+            related = %s, correspondent = %s, operator = %s, driver = %s,
+            equipment = %s, author = %s, additional_info = %s
+            WHERE event_id = %s
+            """
+
+            # Передаем данные для обновления
+            db_connection.cursor.execute(update_query, (
+                data["status"], data["title"], data["place"], data["date"],
+                data["time"], data["linked"], data["correspondent"],
+                data["operator"], data["driver"], data["equipment"],
+                data["author"], data["additional_info"], event_id
+            ))
+
+            # Подтверждаем транзакцию
+            db_connection.connection.commit()
+
+            # Закрываем диалог
+            self.accept()
+
+        except Exception as e:
+            print("Ошибка при обновлении записи в базе данных:", e)
+
+        finally:
+            # Закрываем соединение с базой данных в блоке finally,
+            # чтобы убедиться, что соединение закрыто даже в случае ошибки
+            db_connection.close_connection()
+
+    def accept(self):
+        # Переопределение метода accept для добавления кастомной логики сохранения в базу данных
+
+        if self.data_to_edit:  # Если есть данные для редактирования
+            self.editRecord(self.data_to_edit.get("event_id"))
+        else:
+            self.addRecord()
+
+        super(AddElementDialog, self).accept()
+
+       
