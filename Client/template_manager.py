@@ -1,25 +1,35 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QTableWidget, QVBoxLayout, QWidget, QTableWidgetItem, QPushButton
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout, QTableView
+
+class TableTab(QWidget):
+    def __init__(self, parent=None):
+        super(TableTab, self).__init__(parent)
+        self.layout = QVBoxLayout(self)
+        self.tableView = QTableView(self)
+        self.layout.addWidget(self.tableView)
 
 class TemplateManager:
     def __init__(self, parent):
         self.parent = parent
-        self.template_data = [
-            ["Столбец1", "Столбец2", "Столбец3"],
-            ["Значение11", "Значение12", "Значение13"],
-            ["Значение21", "Значение22", "Значение23"],
-        ]
 
     def open_template(self):
-        new_tab = QWidget()
-        self.parent.tabs.addTab(new_tab, "Новая вкладка")
+        # В этом методе вы можете добавить логику загрузки данных из выбранного шаблона
+        # Здесь я добавлю простой пример создания новой вкладки и таблицы
+        table_tab = TableTab(self.parent.tabs)
+        table = QTableWidget()
+        table.setColumnCount(3)
+        table.setRowCount(5)
+        for i in range(5):
+            for j in range(3):
+                item = QTableWidgetItem(f"Строка {i}, Столбец {j}")
+                table.setItem(i, j, item)
 
-        new_table = QTableWidget(new_tab)
-        new_table.setColumnCount(len(self.template_data[0]))
-        new_table.setRowCount(len(self.template_data))
-        for i, row in enumerate(self.template_data):
-            for j, value in enumerate(row):
-                item = QTableWidgetItem(value)
-                new_table.setItem(i, j, item)
+        table_tab.tableView.setModel(table.model())
+        tab_index = self.parent.tabs.addTab(table_tab, "Новая вкладка")
+        self.parent.tabs.setCurrentIndex(tab_index)
 
-        self.parent.tabs.setCurrentWidget(new_tab)
+class DataItem:
+    def __init__(self, author, name, guest, place):
+        self.author = author
+        self.name = name
+        self.guest = guest
+        self.place = place

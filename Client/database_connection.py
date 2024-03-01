@@ -4,6 +4,7 @@ import os
 import sys
 
 
+
 # Указываем кодировку при загрузке .env файла
 load_dotenv(encoding='utf-8')
 
@@ -50,8 +51,33 @@ class DatabaseConnection:
             print("Ошибка при извлечении данных из базы данных:", error)
         finally:
             self.close_connection()
+            
 
+    def execute_query(self, query, params=None):
+        try:
+            self.connect()
+            self.cursor.execute(query, params)
+            self.connection.commit()
+            print("Запрос успешно выполнен.")
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Ошибка при выполнении запроса:", error)
+        finally:
+            self.close_connection()
+        
 
+    def delete_event(self, event_id):
+        try:
+            self.connect()
+            delete_query = "DELETE FROM events WHERE id = %s;"
+            self.cursor.execute(delete_query, (event_id,))
+            self.connection.commit()
+            print(f"Запись с ID {event_id} успешно удалена.")
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Ошибка при удалении записи из базы данных:", error)
+        finally:
+            self.close_connection()
+
+        
 
 
 

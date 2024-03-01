@@ -2,13 +2,15 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
 from Forms.main import Ui_MainWindow
 from database_connection import DatabaseConnection
-from template_manager import TemplateManager
+#from template_manager import TemplateManager
 from calendarWindow import calendarWindow
 from addElementDialog import AddElementDialog
 from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QStringListModel
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QMenuBar, QToolBar, QAction, QStatusBar, QFormLayout, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QCalendarWidget, QTimeEdit, QListView, QFrame
 from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QComboBox, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QCalendarWidget, QTimeEdit
+
 import sys
  
 class mywindow(QtWidgets.QMainWindow):
@@ -28,7 +30,7 @@ class mywindow(QtWidgets.QMainWindow):
 
         self.addElementDialog = AddElementDialog(self)
 
-        self.template_manager = TemplateManager(self)  # Создаем экземпляр TemplateManager
+        #self.template_manager = TemplateManager(self)  # Создаем экземпляр TemplateManager
         
 
         self.ui.addButton.clicked.connect(self.addElementDialog.show)  # Открываем диалог добавления при нажатии кнопки "Добавить"
@@ -45,6 +47,15 @@ class mywindow(QtWidgets.QMainWindow):
         data_from_db = self.getDataFromDatabase()
         model = self.ui.listView.model()
         model.setStringList(data_from_db)
+
+        # Добавьте атрибут is_filtered
+        self.is_filtered = False
+
+        # # Подключите кнопку фильтрации к методу filter_records
+        # self.ui.filterButton.clicked.connect(self.filter_records)
+
+        # # Подключите кнопку фильтрации к методу filter_records
+        # self.ui.filterButton.clicked.connect(self.filter_records)
 
 
     def addElement(self):
@@ -466,6 +477,36 @@ class mywindow(QtWidgets.QMainWindow):
         elif group == 2:
             self.ui.menu_2.hide()
             self.ui.deleteButton.setVisible(False)
+
+    # def filter_records(self):
+    #     try:
+    #         # Подключаемся к базе данных
+    #         db_connection = DatabaseConnection()
+    #         db_connection.connect()
+
+    #         update_query = "UPDATE events SET is_filtered_column = %s WHERE author = %s;"
+    #         self.cursor.execute(update_query, (True, "John"))
+
+
+    #         # В зависимости от состояния фильтрации, устанавливаем значение
+    #         filter_value = 1 if self.is_filtered else 0
+
+    #         # Выполняем SQL-запрос
+    #         db_connection.fetch_data(update_query, (filter_value,))
+
+    #         # Ваш код обновления записей в интерфейсе, если необходимо
+
+    #         # Использование метода execute_query
+    #         db_connection = DatabaseConnection()
+    #         db_connection.execute_query("UPDATE events SET is_filtered_column = %s WHERE author = %s", (True, "John"))        
+
+    #     except Exception as e:
+    #         # В случае ошибки выводим сообщение
+    #         QMessageBox.critical(self, "Ошибка", f"Ошибка фильтрации записей: {str(e)}")
+
+    #     finally:
+    #         # Закрываем соединение с базой данных
+    #         db_connection.close_connection()         
         
 
 app = QtWidgets.QApplication([])
