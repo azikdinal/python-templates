@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Editor</class>
+ <widget class="QDialog" name="Editor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>312</width>
+    <height>372</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Редактор</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="NameLabel">
+         <property name="text">
+          <string>Название</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="NameLineEdit"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="StatusLabel">
+         <property name="text">
+          <string>Статус</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="StatusCombo"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="PlaceLabel">
+         <property name="text">
+          <string>Место</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="PlaceCombo"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="DateLabel">
+         <property name="text">
+          <string>Дата</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDateEdit" name="DateEdit"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="TimeLabel">
+         <property name="text">
+          <string>Время начала</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QTimeEdit" name="StartTimeEdit"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="EndTimeLabel">
+         <property name="text">
+          <string>Время окончания</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QTimeEdit" name="EndTimeEdit"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="LinkedLabel">
+         <property name="text">
+          <string>Связной</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="LinkedLineEdit"/>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="CorrespondentLabel">
+         <property name="text">
+          <string>Корреспондента</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QComboBox" name="CorrespondentLineEdit"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="OperatorLabel">
+         <property name="text">
+          <string>Оператор</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QComboBox" name="OperatorLineEdit"/>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="DriverLabel">
+         <property name="text">
+          <string>Водитель</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QComboBox" name="DriverComboBox"/>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="EquipmentLabel">
+         <property name="text">
+          <string>Оборудование</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QComboBox" name="EquipmentLineEdit"/>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="AuthorLabel">
+         <property name="text">
+          <string>Автор</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QComboBox" name="AuthorComboBox"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="CancelPushButton_3">
+         <property name="text">
+          <string>Отмена</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SavePushButton">
+         <property name="text">
+          <string>Сохранить</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

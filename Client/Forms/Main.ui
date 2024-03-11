@@ -21,16 +21,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QTabWidget" name="templateTabs">
-          <widget class="QWidget" name="tab">
-           <attribute name="title">
-            <string>Tab 1</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="tab_2">
-           <attribute name="title">
-            <string>Tab 2</string>
-           </attribute>
-          </widget>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
          </widget>
         </item>
         <item>
@@ -131,7 +124,11 @@ l</string>
            </layout>
           </item>
           <item>
-           <widget class="QListView" name="listView"/>
+           <widget class="QTableView" name="tableView">
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+           </widget>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">

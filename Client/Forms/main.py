@@ -9,12 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from template_manager import TemplateManager
-from PyQt5.QtWidgets import QTableWidgetItem
-from template_manager import DataItem
-from database_connection import DatabaseConnection
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QInputDialog
 
 
 class Ui_MainWindow(object):
@@ -31,12 +25,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.templateTabs = QtWidgets.QTabWidget(self.centralwidget)
         self.templateTabs.setObjectName("templateTabs")
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
-        self.templateTabs.addTab(self.tab, "")
-        self.tab_2 = QtWidgets.QWidget()
-        self.tab_2.setObjectName("tab_2")
-        self.templateTabs.addTab(self.tab_2, "")
         self.horizontalLayout_2.addWidget(self.templateTabs)
         self.tableWorlLayout = QtWidgets.QVBoxLayout()
         self.tableWorlLayout.setObjectName("tableWorlLayout")
@@ -74,9 +62,9 @@ class Ui_MainWindow(object):
         self.dellButton.setObjectName("dellButton")
         self.horizontalLayout_3.addWidget(self.dellButton)
         self.tableWorlLayout.addLayout(self.horizontalLayout_3)
-        self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setObjectName("listView")
-        self.tableWorlLayout.addWidget(self.listView)
+        self.tableView = QtWidgets.QTableView(self.centralwidget)
+        self.tableView.setObjectName("tableView")
+        self.tableWorlLayout.addWidget(self.tableView)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.addButton = QtWidgets.QPushButton(self.centralwidget)
@@ -176,40 +164,12 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.action_7)
 
         self.retranslateUi(MainWindow)
+        self.templateTabs.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-        # Добавляем обработчик события для кнопки "Добавить"
-        self.addButton.clicked.connect(MainWindow.addElement)
-
-        self.filterButton.clicked.connect(self.filter_data)
-
-
-        # Добавляем виджет QTabWidget
-        self.tabs = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabs.setObjectName("tabs")
-        self.horizontalLayout_2.addWidget(self.tabs)
-
-        # Соединяем сигнал "Открыть шаблон" с методом open_template
-        self.action_5.triggered.connect(self.open_template)
-
-        # Добавляем список для отслеживания открытых вкладок
-        self.opened_tabs = []
-
-        # Добавим список элементов данных
-        self.data_items = [
-            DataItem("Автор1", "Название1", "Гость1", "Место1"),
-            DataItem("Автор2", "Название2", "Гость2", "Место2"),
-            # Добавьте еще элементов, как требуется
-        ]
-
-        # Добавьте эту строку, чтобы создать атрибут current_user_group при инициализации
-        self.current_user_group = 1  # Или установите значение в соответствии с вашими требованиями
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.templateTabs.setTabText(self.templateTabs.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        self.templateTabs.setTabText(self.templateTabs.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
         self.seatchByButton.setText(_translate("MainWindow", "Поиск по"))
         self.searchButton.setText(_translate("MainWindow", "Поиск"))
         self.oneButton.setText(_translate("MainWindow", "1"))
@@ -220,7 +180,6 @@ class Ui_MainWindow(object):
 "l"))
         self.addButton.setText(_translate("MainWindow", "Добавить"))
         self.deleteButton.setText(_translate("MainWindow", "Удалить"))
-        self.deleteButton.clicked.connect(self.delete_current_event)
         self.editButton.setText(_translate("MainWindow", "Редактировать"))
         self.filterButton.setText(_translate("MainWindow", "Фильтруется/Нет"))
         self.LabelAuthor.setText(_translate("MainWindow", "Автор"))
@@ -235,167 +194,7 @@ class Ui_MainWindow(object):
         self.action_2.setText(_translate("MainWindow", "Создать шаблон"))
         self.action_3.setText(_translate("MainWindow", "Изменить шаблон"))
         self.action_4.setText(_translate("MainWindow", "Удалить шаблон"))
-        #self.action_5.setText(_translate("MainWindow", "Открыть шаблон"))
-        # Добавляем обработчик события для кнопки "Открыть шаблон"
-        #self.action_5.triggered.connect(self.open_template)
+        self.action_5.setText(_translate("MainWindow", "Открыть шаблон"))
         self.action_6.setText(_translate("MainWindow", "Фильтр"))
         self.actionDell.setText(_translate("MainWindow", "Dell"))
-        # Добавьте эту строку для подключения метода к кнопке "Dell"
-        self.dellButton.clicked.connect(self.delete_selected_row)
-        self.dellButton.clicked.connect(self.remove_selected_row)
-
         self.action_7.setText(_translate("MainWindow", "Закрыть шаблон"))
-        self.action_7.triggered.connect(self.close_current_tab)
-
-        # Добавляем текст и соединение сигнала кнопки "Открыть шаблон"
-        self.filterButton.setText(_translate("MainWindow", "Фильтр"))
-        # Добавьте этот код для подключения метода filter_data к кнопке
-        self.filterButton.clicked.connect(self.filter_data)
-        self.filterButton.clicked.connect(self.filter_data)
-        self.action_5.setText(_translate("MainWindow", "Открыть шаблон"))
-        self.action_5.triggered.connect(self.open_template)
-
-    def open_template(self):
-        # Проверяем, что пользователь принадлежит к первой группе
-        if self.current_user_group == 1:
-            template_manager = TemplateManager(self)
-            template_manager.open_template()
-        else:
-            QMessageBox.warning(self, "Недостаточно прав", "У вас нет прав на открытие шаблонов.")    
-
-    def filter_data(self):
-        print("Фильтрация данных: Метод filter_data вызван!")
-
-        # Получите значения из полей фильтрации
-        author = self.LineEditAuthor.text()
-        name = self.LineEditName.text()
-        guest = self.LineEditGuest.text()
-        place = self.LineEditPlace.text()
-
-        # Очистите таблицу перед добавлением новых данных
-        model = QtGui.QStandardItemModel()
-        self.listView.setModel(model)
-
-        # Пройдемся по списку элементов данных и добавим соответствующие элементы в таблицу
-        for item in self.data_items:
-            if (
-                author.lower() in item.author.lower()
-                and name.lower() in item.name.lower()
-                and guest.lower() in item.guest.lower()
-                and place.lower() in item.place.lower()
-            ):
-                # Создаем строку данных и добавляем ее в таблицу
-                data_str = f"{item.author}, {item.name}, {item.guest}, {item.place}"
-                list_item = QtGui.QStandardItem(data_str)
-                model.appendRow(list_item)
-
-    # Добавьте этот метод в класс Ui_MainWindow
-    def delete_selected_row(self):
-        selected_index = self.listView.currentIndex()
-        if selected_index.isValid():
-            row = selected_index.row()
-            model = self.listView.model()
-            model.removeRow(row)
-            # Дополнительно удалите данные из вашего списка данных (self.data_items)
-            # Пример: del self.data_items[row]
-
-    def remove_selected_row(self):
-        selected_index = self.listView.selectedIndexes()
-        if selected_index:
-            row = selected_index[0].row()
-            model = self.listView.model()
-            model.removeRow(row)
-
-    def close_current_tab(self):
-        # Получаем индекс текущей вкладки
-        current_tab_index = self.tabs.currentIndex()
-
-        # Убеждаемся, что есть открытая вкладка для закрытия
-        if current_tab_index != -1:
-            # Закрываем текущую вкладку
-            self.tabs.removeTab(current_tab_index)
-  
-    def delete_current_event(self):
-        # Получите индекс выбранной строки
-        selected_index = self.listView.currentIndex()
-
-        # Убедитесь, что индекс действителен
-        if selected_index.isValid():
-            # Получите данные из модели для выбранной строки
-            model = self.listView.model()
-            item = model.itemFromIndex(selected_index)
-
-            # Получите текст из элемента модели
-            data_str = item.text()
-
-            # Разбейте текст, чтобы получить ID события (предположим, что ID находится в начале строки)
-            event_id = data_str.split(',')[0]
-
-            # Передайте event_id в метод delete_event вашего DatabaseConnection
-            db_connection = DatabaseConnection()
-            db_connection.delete_event(event_id)
-
-            # Обновите отображение списка после удаления записи
-            self.filter_data()
-
-    # def filter_records(self):
-    #     try:
-    #         # Подключаемся к базе данных
-    #         db_connection = DatabaseConnection()
-    #         db_connection.connect()
-
-    #         # Определяем SQL-запрос для обновления статуса фильтрации записей
-    #         query = "UPDATE events SET is_filtered_column = %s"
-
-    #         # В зависимости от состояния фильтрации, устанавливаем значение
-    #         filter_value = 1 if self.is_filtered else 0
-
-    #         # Выполняем SQL-запрос
-    #         db_connection.execute_query(query, (filter_value,))
-
-    #         # Ваш код обновления записей в интерфейсе, если необходимо
-
-    #     except Exception as e:
-    #         # В случае ошибки выводим сообщение
-    #         QMessageBox.critical(self, "Ошибка", f"Ошибка фильтрации записей: {str(e)}")
-
-    #     finally:
-    #         # Закрываем соединение с базой данных
-    #         db_connection.close_connection()         
-
-    def create_template(self):
-        # Проверяем, что пользователь принадлежит к первой группе
-        if self.current_user_group == 1:
-            # Ваш код для создания шаблона
-            template_name, ok_pressed = QInputDialog.getText(self, "Создание шаблона", "Введите имя шаблона:")
-            if ok_pressed and template_name:
-                # Здесь вы можете использовать template_name для создания нового шаблона
-                print(f"Создан новый шаблон с именем: {template_name}")
-        else:
-            QMessageBox.warning(self, "Недостаточно прав", "У вас нет прав на создание шаблонов.")
-
-    def edit_template(self):
-        # Проверяем, что пользователь принадлежит к первой группе
-        if self.current_user_group == 1:
-            # Ваш код для редактирования шаблона
-            selected_template, ok_pressed = QInputDialog.getItem(self, "Редактирование шаблона", "Выберите шаблон:",
-                                                                 ["Шаблон 1", "Шаблон 2", "Шаблон 3"],
-                                                                 current=0, editable=False)
-            if ok_pressed and selected_template:
-                # Здесь вы можете использовать selected_template для редактирования выбранного шаблона
-                print(f"Отредактирован шаблон: {selected_template}")
-        else:
-            QMessageBox.warning(self, "Недостаточно прав", "У вас нет прав на редактирование шаблонов.")
-
-    def delete_template(self):
-        # Проверяем, что пользователь принадлежит к первой группе
-        if self.current_user_group == 1:
-            # Ваш код для удаления шаблона
-            selected_template, ok_pressed = QInputDialog.getItem(self, "Удаление шаблона", "Выберите шаблон:",
-                                                                 ["Шаблон 1", "Шаблон 2", "Шаблон 3"],
-                                                                 current=0, editable=False)
-            if ok_pressed and selected_template:
-                # Здесь вы можете использовать selected_template для удаления выбранного шаблона
-                print(f"Удален шаблон: {selected_template}")
-        else:
-            QMessageBox.warning(self, "Недостаточно прав", "У вас нет прав на удаление шаблонов.")   
