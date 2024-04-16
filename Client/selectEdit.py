@@ -4,8 +4,8 @@ from Db.DbContext import DbContext
 from place import place
 from link import link
 from worker import worker
-from editor import editor
-from equipment import equipment
+from dialogs.EditorDialog import EditorDialog
+from dialogs.EquipmentDialog import EquipmentDialog
 
 class selectEdit(QtWidgets.QDialog):
     def __init__(self, context: DbContext):
@@ -38,11 +38,11 @@ class selectEdit(QtWidgets.QDialog):
         
     def eventDialog(self):
         self.hide()
-        e = editor(self.dbContext)
+        e = EditorDialog(self.dbContext)
         e.exec()
         
     def equipmentDialog(self):
         self.hide()
-        e = equipment(self.dbContext)
+        e = EquipmentDialog(self.dbContext)
         e.exec()
         

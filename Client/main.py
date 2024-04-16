@@ -12,7 +12,7 @@ from template_dialog import TemplateDialog
 from template import Template
 from excel_handler import ExcelHandler
 from data_filter import DataFilter
-from editor import editor
+from dialogs.EditorDialog import EditorDialog
 import sys
 
 class main(QMainWindow):
@@ -220,6 +220,6 @@ class main(QMainWindow):
         # или вызывая методы редактирования непосредственно из основного окна.
 
         # Пример:
-        editor_window = editor(self.dbContext)
+        editor_window = EditorDialog(self.dbContext)
         editor_window.edit(event_data)
         editor_window.exec_()

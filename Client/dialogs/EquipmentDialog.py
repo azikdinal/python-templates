@@ -3,9 +3,9 @@ from Forms.equipment import Ui_equipmentDialog
 from Db.DbContext import DbContext
 from Utils import Utils
 
-class equipment(QtWidgets.QDialog):
+class EquipmentDialog(QtWidgets.QDialog):
     def __init__(self, context: DbContext):
-        super(equipment, self).__init__()
+        super(EquipmentDialog, self).__init__()
         
         self.dbContext = context
         self.ui = Ui_equipmentDialog()

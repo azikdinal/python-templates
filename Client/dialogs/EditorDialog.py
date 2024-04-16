@@ -3,8 +3,7 @@ from Forms.editor import Ui_Editor
 from Db.DbContext import DbContext
 from Utils import Utils
 
-class editor(QtWidgets.QDialog):
-    
+class EditorDialog(QtWidgets.QDialog):
     statusBoof = {}
     placeBoof = {}
     workerBoof = {}
@@ -13,7 +12,7 @@ class editor(QtWidgets.QDialog):
     equipmentBoof = {}
     
     def __init__(self, context: DbContext):
-        super(editor, self).__init__()
+        super(EditorDialog, self).__init__()
         
         self.dbContext = context
         self.ui = Ui_Editor()
