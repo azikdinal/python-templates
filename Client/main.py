@@ -6,13 +6,12 @@ from windows.CalendarWindow import CalendarWindow
 from Db.DbContext import DbContext
 from Db.User import User
 from utils.Utils import Utils
-from selectEdit import selectEdit
+from dialogs.SelectEditDialog import SelectEditDialog
 from dialogs.AddTemplateDialog import AddTemplateDialog
 from template import Template
 from utils.excel_handler import ExcelHandler
 from data_filter import DataFilter
 from dialogs.EditorDialog import EditorDialog
-import sys
 
 class main(QMainWindow):
     def __init__(self, dbContext: DbContext, user: User):
@@ -31,7 +30,7 @@ class main(QMainWindow):
         self.ui.addButton.clicked.connect(self.addEventButton)
 
         # Создаем экземпляр selectEdit
-        self.selectEdit = selectEdit(dbContext)
+        self.selectEdit = SelectEditDialog(dbContext)
 
         self.setUiGroup(user['group_id'])
 

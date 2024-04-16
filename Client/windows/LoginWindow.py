@@ -1,14 +1,13 @@
-from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QMessageBox
 from Forms.login import Ui_LoginWindow
 from Db.DbContext import DbContext
 from main import main
 from utils.Utils import Utils
-import sys
  
-class login(QtWidgets.QMainWindow):
+class LoginWindow(QMainWindow):
     def __init__(self, context: DbContext):
-        super(login, self).__init__()
+        super(LoginWindow, self).__init__()
         
         self.dbContext = context
         self.ui = Ui_LoginWindow()

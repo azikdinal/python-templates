@@ -2,14 +2,14 @@ from PyQt5.QtWidgets import QDialog
 from Forms.select import Ui_SelectDialog
 from Db.DbContext import DbContext
 from place import place
-from link import link
+from dialogs.LinkDialog import LinkDialog
 from widgets.WorkerWidget import WorkerWidget
 from dialogs.EditorDialog import EditorDialog
 from dialogs.EquipmentDialog import EquipmentDialog
 
-class selectEdit(QDialog):
+class SelectEditDialog(QDialog):
     def __init__(self, context: DbContext):
-        super(selectEdit, self).__init__()
+        super(SelectEditDialog, self).__init__()
         
         self.dbContext = context
         self.ui = Ui_SelectDialog()
@@ -28,7 +28,7 @@ class selectEdit(QDialog):
         
     def linkDialog(self):
         self.hide()
-        l = link(self.dbContext)
+        l = LinkDialog(self.dbContext)
         l.exec()
         
     def workerDialog(self):
