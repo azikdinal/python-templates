@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 from Forms.link import Ui_linkDialog
 from Db.DbContext import DbContext
-from Utils import Utils
+from utils.Utils import Utils
 
 class link(QtWidgets.QDialog):
     def __init__(self, context: DbContext):

@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 from Forms.equipment import Ui_equipmentDialog
 from Db.DbContext import DbContext
-from Utils import Utils
+from utils.Utils import Utils
 
 class EquipmentDialog(QtWidgets.QDialog):
     def __init__(self, context: DbContext):

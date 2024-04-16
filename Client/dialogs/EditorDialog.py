@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 from Forms.editor import Ui_Editor
 from Db.DbContext import DbContext
-from Utils import Utils
+from utils.Utils import Utils
 
 class EditorDialog(QtWidgets.QDialog):
     statusBoof = {}

@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 from Forms.author import Ui_AuthorDialog
 from Db.DbContext import DbContext
-from Utils import Utils
+from utils.Utils import Utils
 
 class AuthorDialog(QtWidgets.QDialog):
     def __init__(self, context: DbContext):

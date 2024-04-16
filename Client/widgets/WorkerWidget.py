@@ -1,11 +1,11 @@
 from PyQt5 import QtWidgets
 from Forms.worker import Ui_WorkerDialog
 from Db.DbContext import DbContext
-from Utils import Utils
+from utils.Utils import Utils
 
-class worker(QtWidgets.QDialog):
+class WorkerWidget(QtWidgets.QDialog):
     def __init__(self, context: DbContext):
-        super(worker, self).__init__()
+        super(WorkerWidget, self).__init__()
         
         self.dbContext = context
         self.ui = Ui_WorkerDialog()

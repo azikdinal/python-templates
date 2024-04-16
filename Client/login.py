@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 from Forms.login import Ui_LoginWindow
 from Db.DbContext import DbContext
 from main import main
-from Utils import Utils
+from utils.Utils import Utils
 import sys
  
 class login(QtWidgets.QMainWindow):

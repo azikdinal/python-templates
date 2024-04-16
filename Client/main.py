@@ -5,12 +5,11 @@ from Forms.main import Ui_MainWindow
 from windows.CalendarWindow import CalendarWindow
 from Db.DbContext import DbContext
 from Db.User import User
-from Utils import Utils
+from utils.Utils import Utils
 from selectEdit import selectEdit
-from template_dialog import AddTemplateDialog
-from template_dialog import TemplateDialog
+from dialogs.AddTemplateDialog import AddTemplateDialog
 from template import Template
-from excel_handler import ExcelHandler
+from utils.excel_handler import ExcelHandler
 from data_filter import DataFilter
 from dialogs.EditorDialog import EditorDialog
 import sys
