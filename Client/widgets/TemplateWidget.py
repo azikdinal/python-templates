@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 
-class Template(QWidget):
+class TemplateWidget(QWidget):
     def __init__(self, template):
         super().__init__()
 

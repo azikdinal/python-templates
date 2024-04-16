@@ -8,7 +8,7 @@ from Db.User import User
 from utils.Utils import Utils
 from dialogs.SelectEditDialog import SelectEditDialog
 from dialogs.AddTemplateDialog import AddTemplateDialog
-from template import Template
+from widgets.TemplateWidget import TemplateWidget
 from utils.excel_handler import ExcelHandler
 from data_filter import DataFilter
 from dialogs.EditorDialog import EditorDialog
@@ -103,7 +103,7 @@ class main(QMainWindow):
             
             # Теперь вы можете использовать эти данные для добавления нового шаблона в базу данных
             # Например:
-            new_template = Template(name=name, description=description, columns=columns)
+            new_template = TemplateWidget(name=name, description=description, columns=columns)
             self.dbContext.add_template(new_template)
 
     def editTemplate(self):
@@ -180,7 +180,7 @@ class main(QMainWindow):
         if template_data:
             # Если данные шаблона успешно получены из базы данных,
             # создаем новую вкладку или окно и отображаем данные шаблона в ней
-            template_window = Template(template_data)
+            template_window = TemplateWidget(template_data)
             template_window.setWindowTitle(selected_template)
             self.ui.templateTabs.addTab(template_window, selected_template)
             self.ui.templateTabs.setCurrentWidget(template_window)
