@@ -3,9 +3,9 @@ from Forms.author import Ui_AuthorDialog
 from Db.DbContext import DbContext
 from Utils import Utils
 
-class author(QtWidgets.QDialog):
+class AuthorDialog(QtWidgets.QDialog):
     def __init__(self, context: DbContext):
-        super(author, self).__init__()
+        super(AuthorDialog, self).__init__()
         
         self.dbContext = context
         self.ui = Ui_AuthorDialog()
