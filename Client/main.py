@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from Forms.main import Ui_MainWindow
-from calendarWindow import calendarWindow
+from windows.CalendarWindow import CalendarWindow
 from Db.DbContext import DbContext
 from Db.User import User
 from Utils import Utils
@@ -59,17 +59,17 @@ class main(QMainWindow):
 
         self.ui.tableView.setModel(Utils.toTableModel([]))
 
-        self.calendarWindow = calendarWindow()
+        self.CalendarWindow = CalendarWindow()
 
         # self.ui.searchButton.clicked.connect(self.searchButtonClicked)
         # self.ui.filterButton.clicked.connect(self.filterButtonClicked)
 
 
     def oneButtonClick(self):
-        if self.calendarWindow.isHidden():
-            self.calendarWindow.show()
+        if self.CalendarWindow.isHidden():
+            self.CalendarWindow.show()
         else:
-            self.calendarWindow.hide()
+            self.CalendarWindow.hide()
 
     def twoButtonClick(self):
         self.ui.dellButton.setVisible(True)

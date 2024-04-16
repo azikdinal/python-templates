@@ -3,9 +3,9 @@ from Forms.calendar import Ui_CalendarWindow
 from datetime import date
 import sys
 
-class calendarWindow(QtWidgets.QMainWindow):
+class CalendarWindow(QtWidgets.QMainWindow):
     def __init__(self):
-        super(calendarWindow, self).__init__()
+        super(CalendarWindow, self).__init__()
         self.ui = Ui_CalendarWindow()
         self.ui.setupUi(self)
 
