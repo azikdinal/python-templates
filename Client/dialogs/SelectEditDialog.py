@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog
 from Forms.select import Ui_SelectDialog
 from Db.DbContext import DbContext
-from place import place
+from widgets.PlaceWidget import PlaceWidget
 from dialogs.LinkDialog import LinkDialog
 from widgets.WorkerWidget import WorkerWidget
 from dialogs.EditorDialog import EditorDialog
@@ -23,7 +23,7 @@ class SelectEditDialog(QDialog):
         
     def placeDialog(self):
         self.hide()
-        p = place(self.dbContext)
+        p = PlaceWidget(self.dbContext)
         p.exec()
         
     def linkDialog(self):

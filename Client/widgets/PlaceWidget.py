@@ -1,11 +1,11 @@
-from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QDialog
 from Forms.place import Ui_PlaceDialog
 from Db.DbContext import DbContext
 from utils.Utils import Utils
 
-class place(QtWidgets.QDialog):
+class PlaceWidget(QDialog):
     def __init__(self, context: DbContext):
-        super(place, self).__init__()
+        super(PlaceWidget, self).__init__()
         
         self.dbContext = context
         self.ui = Ui_PlaceDialog()
