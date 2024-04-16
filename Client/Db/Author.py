@@ -1,11 +1,11 @@
 from Db.Base import Base
 
-class Worker(Base):
+class Author(Base):
     
     def __init__(self, connection, cursor, schema : str) -> None:
         Base.__init__(self, connection, cursor)
 
-        self.table = 'workers'
+        self.table = 'authors'
         self.schema = schema
         
     def get(self):

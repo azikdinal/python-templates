@@ -15,7 +15,7 @@ class calendarWindow(QtWidgets.QMainWindow):
 
     def date_selected(self):
         # Получаем выбранную дату из календаря
-        selected_date = self.ui.calendarWidget.selectedDate().toPyDate()
+        selected_date = self.ui.calendarWidget_2.selectedDate().toPyDate()
 
         print(f"Selected date: {selected_date}")
 
